@@ -2,10 +2,6 @@ env:
   APP_NAME: gocardless-scala
 
 steps:
-  - label: ":sbt: SBT Unit"
+  - label: ":wave:"
     commands:
-      - sbt test
-
-  - label: ":sbt: SBT Compile"
-    commands:
-      - sbt clean compile
+      - echo "Hello"
