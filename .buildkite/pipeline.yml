@@ -1,0 +1,7 @@
+env:
+  APP_NAME: gocardless-scala
+
+steps:
+  - label: ":sbt: SBT Unit"
+    commands:
+      - sbt test
