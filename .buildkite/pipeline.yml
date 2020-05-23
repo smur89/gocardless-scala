@@ -5,3 +5,7 @@ steps:
   - label: ":sbt: SBT Unit"
     commands:
       - sbt test
+
+  - label: ":sbt: SBT Compile"
+    commands:
+      - sbt clean compile
