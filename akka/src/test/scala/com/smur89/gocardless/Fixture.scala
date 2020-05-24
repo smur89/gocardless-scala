@@ -2,17 +2,36 @@ package com.smur89.gocardless
 
 import java.util.UUID
 
+import akka.actor.ActorSystem
+import akka.http.scaladsl.model.HttpResponse
+import akka.stream.Materializer
+import com.smur89.gocardless.client.GoCardlessClient
 import com.smur89.gocardless.models._
+import monix.eval.Task
+import monix.eval.Task.contextShift
 import org.mockito.MockitoSugar
+
+import cats.data.EitherT
 
 import scala.util.Properties
 
 trait Fixture extends MockitoSugar {
+  type TestContext[A] = EitherT[Task, GoCardlessClientError[_], A]
+
+  implicit val system:       ActorSystem  = ActorSystem()
+  implicit val materializer: Materializer = Materializer(system)
 
   val config: GoCardlessConfiguration = GoCardlessConfiguration(
     "https://api-sandbox.gocardless.com/",
     Properties.envOrElse("GOCARDLESS_ACCESS_TOKEN", "my_gocardless_access_token")
   )
+
+  val mockHttpSender: AkkaHttp[TestContext] = {
+    val realHttpSender = new AkkaHttp[TestContext](config)
+    spy(realHttpSender)
+  }
+
+  val client = new GoCardlessClient[TestContext, HttpResponse](mockHttpSender)
 
   val unproccessableEntityError: UnprocessableEntity = UnprocessableEntity(
     "validation_failed",

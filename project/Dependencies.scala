@@ -10,7 +10,7 @@ object Dependencies {
     val chimney       = "0.5.2"
     val circe         = "0.13.0"
     val mockito       = "1.14.2"
-    val pureconfig    = "0.12.3"
+    val monix         = "3.2.1"
     val scalatest     = "3.1.2"
     val tagless       = "0.11"
   }
@@ -34,12 +34,13 @@ object Dependencies {
     "io.circe" %% "circe-parser"
   ).map(_ % versions.circe)
 
-  val paradiseMacro: ModuleID = "org.typelevel" %% "kind-projector" % "0.10.3"
-
-  val pureconfig: Seq[ModuleID] = Seq(
-    "com.github.pureconfig" %% "pureconfig"         % versions.pureconfig,
-    "com.github.pureconfig" %% "pureconfig-generic" % versions.pureconfig
+  val monix: Seq[ModuleID] = Seq(
+    "io.monix" %% "monix"           % versions.monix,
+    "io.monix" %% "monix-eval"      % versions.monix,
+    "io.monix" %% "monix-execution" % versions.monix
   )
+
+  val paradiseMacro: ModuleID = "org.typelevel" %% "kind-projector" % "0.10.3"
 
   val tagless: Seq[ModuleID] = Seq(
     "org.typelevel" %% "cats-tagless-core"   % versions.tagless,

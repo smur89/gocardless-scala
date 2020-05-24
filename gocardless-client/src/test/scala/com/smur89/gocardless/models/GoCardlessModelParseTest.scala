@@ -7,19 +7,19 @@ import scala.io.Source
 
 class GoCardlessModelParseTest extends BaseSpec {
 
-  "Amplitude Client" when {
+  "GoCardless Client" when {
     "Serialising/Deserialising" should {
-      "serialise request data" in new Fixture {
+      "deserialise unprocessable entity" in new Fixture {
         val json = Source.fromResource("unprocessable_entity.json").getLines.mkString
         unproccessableEntityError.asJson.noSpaces shouldBe json
       }
 
-      "deserialise invalid request error" in new Fixture {
+      "deserialise conflict error" in new Fixture {
         val json = Source.fromResource("conflict.json").getLines.mkString
         conflictError.asJson.noSpaces shouldBe json
       }
 
-      "deserialise Success Summary" in new Fixture {
+      "deserialise Bad Request" in new Fixture {
         val json = Source.fromResource("bad_request.json").getLines.mkString
         badRequestError.asJson.noSpaces shouldBe json
       }
