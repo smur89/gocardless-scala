@@ -1,0 +1,9 @@
+env:
+  APP_NAME: gocardless-scala
+
+steps:
+  - label: ":sbt: SBT Unit"
+    plugins:
+      - docker-compose#v3.3.0:
+          run: sbt
+          command: ["test"]

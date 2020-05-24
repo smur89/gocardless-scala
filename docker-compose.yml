@@ -1,0 +1,11 @@
+version: '2.4'
+
+services:
+  sbt:
+    image: eed3si9n/sbt:jdk11-alpine
+    volumes:
+      - ./:/opt/workspace
+      - $HOME/.ivy2:/root/.ivy2
+      - $HOME/.sbt:/root/.sbt
+    ports:
+      - 3000
