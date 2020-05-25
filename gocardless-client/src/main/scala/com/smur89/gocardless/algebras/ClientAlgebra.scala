@@ -7,8 +7,7 @@ import cats.tagless.{Derive, FunctorK}
 import scala.language.higherKinds
 
 trait ClientAlgebra[F[_]] {
-  // Customer
-  def createCustomer(customer: Customer): F[Unit]
+  def createCustomer(customer: Customer): F[String]
   def listCustomers: F[Unit]
   def getCustomer(id:    String): F[Unit]
   def updateCustomer(id: String, customer: Customer): F[Unit]
@@ -16,6 +15,5 @@ trait ClientAlgebra[F[_]] {
 }
 
 object ClientAlgebra {
-  implicit val functorK: FunctorK[ClientAlgebra] =
-    Derive.functorK[ClientAlgebra]
+  implicit val functorK: FunctorK[ClientAlgebra] = Derive.functorK[ClientAlgebra]
 }
