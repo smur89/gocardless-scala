@@ -17,5 +17,5 @@ lazy val `gocardless-client` =
 lazy val akka =
   Project(id = "akka", base = file("akka"))
     .settings(name := s"$domain-akka")
-    .deps(Dependencies)(_.cats, _.circe, _.tests, _ => Seq(compilerPlugin(Dependencies.paradiseMacro)))
+    .deps(Dependencies)(_.cats, _.circe, _.monix, _.tests, _ => Seq(compilerPlugin(Dependencies.paradiseMacro)))
     .dependsOn(`gocardless-client`)

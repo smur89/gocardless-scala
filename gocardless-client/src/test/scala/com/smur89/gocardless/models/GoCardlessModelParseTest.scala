@@ -11,17 +11,17 @@ class GoCardlessModelParseTest extends BaseSpec {
     "Serialising/Deserialising" should {
       "deserialise unprocessable entity" in new Fixture {
         val json = Source.fromResource("unprocessable_entity.json").getLines.mkString
-        unproccessableEntityError.asJson.noSpaces shouldBe json
+        json shouldBe unproccessableEntityError.asJson.printWith(printer)
       }
 
       "deserialise conflict error" in new Fixture {
         val json = Source.fromResource("conflict.json").getLines.mkString
-        conflictError.asJson.noSpaces shouldBe json
+        json shouldBe conflictError.asJson.printWith(printer)
       }
 
       "deserialise Bad Request" in new Fixture {
         val json = Source.fromResource("bad_request.json").getLines.mkString
-        badRequestError.asJson.noSpaces shouldBe json
+        json shouldBe badRequestError.asJson.printWith(printer)
       }
     }
   }

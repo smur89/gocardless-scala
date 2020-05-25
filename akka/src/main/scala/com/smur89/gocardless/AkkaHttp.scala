@@ -5,7 +5,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import com.smur89.gocardless.algebras.HttpAlgebra
 import com.smur89.gocardless.models._
-import com.smur89.gocardless.models.api.GoCardlessApiEntity
+import com.smur89.gocardless.models.api.{GoCardlessApiEntity, GoCardlessResponse}
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
 import io.circe.syntax._
 

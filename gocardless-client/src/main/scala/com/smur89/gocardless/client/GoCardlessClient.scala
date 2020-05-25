@@ -1,8 +1,7 @@
 package com.smur89.gocardless.client
 
 import com.smur89.gocardless.algebras.{ClientAlgebra, HttpAlgebra}
-import com.smur89.gocardless.models.GoCardlessClientError
-import com.smur89.gocardless.models.api.Customer
+import com.smur89.gocardless.models.api.{Customer, GoCardlessError}
 
 import cats.ApplicativeError
 import cats.implicits.toFlatMapOps
@@ -12,7 +11,7 @@ import scala.language.higherKinds
 
 class GoCardlessClient[F[_], A](http: HttpAlgebra[F, A])(implicit
   F:                                  Async[F],
-  FE:                                 ApplicativeError[F, GoCardlessClientError[_]]
+  FE:                                 ApplicativeError[F, GoCardlessError]
 ) extends ClientAlgebra[F] {
 
   override def createCustomer(req: Customer): F[Unit] =
@@ -28,7 +27,7 @@ class GoCardlessClient[F[_], A](http: HttpAlgebra[F, A])(implicit
 
   def responseHandler: A => F[Unit] =
     http.responseHandler.andThen(_.flatMap {
-      case error: GoCardlessClientError[_] => FE.raiseError[Unit](error)
+      case error: GoCardlessError => FE.raiseError[Unit](error)
       case _ => F.unit
     })
 }
