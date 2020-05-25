@@ -1,9 +1,9 @@
 {
   "error": {
-    "documentation_url": "https://developer.gocardless.com/#validation_failed",
-    "message": "Validation failed",
     "type": "validation_failed",
     "code": 422,
+    "documentation_url": "https://developer.gocardless.com/#validation_failed",
+    "message": "Validation failed",
     "request_id": "dd50eaaf-8213-48fe-90d6-5466872efbc4",
     "errors": [
       {
