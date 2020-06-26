@@ -11,6 +11,10 @@ object GoCardlessApiError {
   implicit lazy val decoder: Decoder[GoCardlessApiError] = deriveConfiguredDecoder
 }
 
+trait GcError
+
+final case class GenericError(msg: String) extends GcError
+
 final case class GoCardlessError(
   `type`:           String,
   code:             Int,
@@ -25,5 +29,5 @@ object GoCardlessError {
   implicit def decoder: Decoder[GoCardlessError] = deriveConfiguredDecoder
 }
 
-final case class ServerError(message: String)
-final case class ServiceUnavailable(message: String)
+final case class ServerError(message: String) extends GcError
+final case class ServiceUnavailable(message: String) extends GcError

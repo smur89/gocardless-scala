@@ -1,3 +1,9 @@
 resolvers += Resolver.typesafeIvyRepo("releases")
-addSbtPlugin("org.scoverage"            %% "sbt-scoverage" % "1.6.1")
-addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat"  % "0.1.12")
+resolvers += Resolver.sonatypeRepo("releases")
+
+val paradiseMacro = "2.1.1"
+val scoverage     = "1.6.1"
+val tpolecat      = "0.1.11"
+
+addSbtPlugin("org.scoverage"            %% "sbt-scoverage" % scoverage)
+addSbtPlugin("io.github.davidgregory084" % "sbt-tpolecat"  % tpolecat)

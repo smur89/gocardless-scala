@@ -1,21 +1,19 @@
 package com.smur89.gocardless.client
 
 import com.smur89.gocardless.algebras.{ClientAlgebra, HttpAlgebra}
-import com.smur89.gocardless.models.api.{Customer, GoCardlessError}
+import com.smur89.gocardless.models.api.Customer
 
-import cats.ApplicativeError
 import cats.implicits.toFlatMapOps
 import cats.effect.Async
 
 import scala.language.higherKinds
 
-class GoCardlessClient[F[_], A](http: HttpAlgebra[F, A])(implicit
-  F:                                  Async[F],
-  FE:                                 ApplicativeError[F, GoCardlessError]
-) extends ClientAlgebra[F] {
+class GoCardlessClient[F[_], A](http: HttpAlgebra[F, A])(implicit F: Async[F]) extends ClientAlgebra[F] {
 
-  override def createCustomer(req: Customer): F[Unit] =
-    http.postRequest(req).flatMap(responseHandler)
+  val customersRootPath = "/customers"
+
+  override def createCustomer(req: Customer): F[String] =
+    http.postRequest(customersRootPath)(req).flatMap(responseHandler)
 
   override def listCustomers: F[Unit] = ???
 
@@ -25,9 +23,5 @@ class GoCardlessClient[F[_], A](http: HttpAlgebra[F, A])(implicit
 
   override def removeCustomer(id: String): F[Unit] = ???
 
-  def responseHandler: A => F[Unit] =
-    http.responseHandler.andThen(_.flatMap {
-      case error: GoCardlessError => FE.raiseError[Unit](error)
-      case _ => F.unit
-    })
+  def responseHandler: A => F[String] = http.responseHandler
 }

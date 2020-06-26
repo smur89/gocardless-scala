@@ -1,37 +1,40 @@
-package com.smur89.gocardless
+package com.smur89.gocardless.sttp
 
 import java.util.UUID
 
-import akka.actor.ActorSystem
-import akka.http.scaladsl.model.HttpResponse
-import akka.stream.Materializer
 import com.smur89.gocardless.client.GoCardlessClient
-import com.smur89.gocardless.models._
-import com.smur89.gocardless.models.api.{Default, GoCardlessApiError, GoCardlessError, Validation}
+import com.smur89.gocardless.models.GoCardlessConfiguration
+import com.smur89.gocardless.models.api.{Default, GcError, GoCardlessApiError, GoCardlessError, Validation}
 import monix.eval.Task
 import org.mockito.MockitoSugar
+import sttp.client.asynchttpclient.WebSocketHandler
+import sttp.client.asynchttpclient.monix.AsyncHttpClientMonixBackend
+import sttp.client.{Response, SttpBackend}
 
 import cats.data.EitherT
+import cats.effect.{ContextShift, IO, Resource}
 
+import cats.mtl.instances.handle._
 import scala.util.Properties
 
 trait Fixture extends MockitoSugar {
-  type TestContext[A] = EitherT[Task, GoCardlessError, A]
-
-  implicit val system:       ActorSystem  = ActorSystem()
-  implicit val materializer: Materializer = Materializer(system)
+  type TestContext[A] = EitherT[Task, GcError, A]
 
   val config: GoCardlessConfiguration = GoCardlessConfiguration(
-    "https://api-sandbox.gocardless.com/",
+    Properties.envOrElse("GOCARDLESS_URL", "https://api-sandbox.gocardless.com/"),
     Properties.envOrElse("GOCARDLESS_ACCESS_TOKEN", "my_gocardless_access_token")
   )
 
-  val mockHttpSender: AkkaHttp[TestContext] = {
-    val realHttpSender = new AkkaHttp[TestContext](config)
-    spy(realHttpSender)
+  val mockHttpSender: Sttp[TestContext] = {
+    implicit val httpBackend = AsyncHttpClientMonixBackend.resource()
+
+    httpBackend.use(implicit x => {
+      val realHttpSender = new Sttp[TestContext](config)
+
+    })
   }
 
-  val client = new GoCardlessClient[TestContext, HttpResponse](mockHttpSender)
+  val client = new GoCardlessClient[TestContext, Response[Either[String, String]]](mockHttpSender)
 
   val unproccessableEntityError: GoCardlessApiError = GoCardlessApiError(
     GoCardlessError(
