@@ -4,6 +4,6 @@ env:
 steps:
   - label: ":sbt: SBT Unit"
     plugins:
-      - docker-compose#v3.7.0:
+      - docker-compose#v3.13.0:
           run: sbt
           command: ["test"]
