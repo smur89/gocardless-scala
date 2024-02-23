@@ -40,7 +40,7 @@ object Dependencies {
     "io.monix" %% "monix-execution" % versions.monix
   )
 
-  val paradiseMacro: ModuleID = "org.typelevel" %% "kind-projector" % "0.10.3"
+  val paradiseMacro: ModuleID = "org.typelevel" %% "kind-projector" % "0.13.3"
 
   val tagless: Seq[ModuleID] = Seq(
     "org.typelevel" %% "cats-tagless-core"   % versions.tagless,
