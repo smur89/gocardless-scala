@@ -3,7 +3,7 @@ import Settings._
 
 Global / cancelable   := true
 Global / version      := ConfigFactory.parseFile(new File("version.sh")).getString("VERSION")
-Global / scalaVersion := "2.12.10"
+Global / scalaVersion := "2.13.15"
 
 val domain = "gocardless"
 
